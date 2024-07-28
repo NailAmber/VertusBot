@@ -1,6 +1,8 @@
 # Auto Vertus claimer
 Auto claimer for @Vertus_App_bot
 
+My tg: https://t.me/Zzjjjuuu
+
 ## Functionality
 | Functional                                                     | Supported |
 |----------------------------------------------------------------|:---------:|
