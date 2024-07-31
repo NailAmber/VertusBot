@@ -12,6 +12,8 @@ from fake_useragent import UserAgent
 from aiohttp_socks import ProxyConnector
 import json
 import os
+from pyrogram.raw.functions.messages import RequestAppWebView
+from pyrogram.raw.types import InputBotAppShortName
 
 
 class Vertus:
@@ -306,24 +308,41 @@ class Vertus:
 
     async def get_tg_web_data(self):
         try:
+            
             await self.client.connect()
+
+
+            # web_view = await self.client.invoke(RequestAppWebView(
+            #     peer=await self.client.resolve_peer('Vertus_App_bot'),
+            #     app=InputBotAppShortName(bot_id=await self.client.resolve_peer('Vertus_App_bot'), short_name="app"),
+            #     platform='ios',
+            #     write_allowed=True,
+            #     start_param="374069367"
+            # ))
+
             web_view = await self.client.invoke(RequestWebView(
                 peer=await self.client.resolve_peer('Vertus_App_bot'),
                 bot=await self.client.resolve_peer('Vertus_App_bot'),
-                platform='android',
+                platform='ios',
                 from_bot_menu=False,
-                url='https://t.me/vertus_app_bot/app'
+                url='https://thevertus.app/'
             ))
 
-            await self.client.disconnect()
-            auth_url = web_view.url
 
+            # query_id=AAF32EsWAAAAAHfYSxaUHXBb&user=%7B%22id%22%3A374069367%2C%22first_name%22%3A%22Nail%F0%9F%A6%B4%22%2C%22last_name%22%3A%22Amber%22%2C%22username%22%3A%22Zzjjjuuu%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1722449219&hash=924449490f690a7e895edbfcc06df16eb3937619a5a1629bb3b1723b38048853
+            await self.client.disconnect() 
+            auth_url = web_view.url
+            # print('auth_url =', auth_url)
+            
             query = unquote(string=unquote(string=auth_url.split('tgWebAppData=')[1].split('&tgWebAppVersion')[0]))
+            # print('111')
             query_id = query.split('query_id=')[1].split('&user=')[0]
+            # print('333')
             user = quote(query.split("&user=")[1].split('&auth_date=')[0])
             auth_date = query.split('&auth_date=')[1].split('&hash=')[0]
             hash_ = query.split('&hash=')[1]
-
+            
             return f"query_id={query_id}&user={user}&auth_date={auth_date}&hash={hash_}"
-        except:
+        except Exception as e:
+            print('e =', e)
             return None
