@@ -27,27 +27,20 @@ class Vertus:
 
         if proxy:
             proxy = {
-                "scheme": config.PROXY_TYPES['TG'],
+                "scheme": config.PROXY['TYPE']['TG'],
                 "hostname": proxy.split(":")[1].split("@")[1],
                 "port": int(proxy.split(":")[2]),
                 "username": proxy.split(":")[0],
                 "password": proxy.split(":")[1].split("@")[0]
             }
 
-        with open("./data/api_config.json", "r") as f:
-            apis = json.load(f)
-            phone_number = apis[phone_number]
-            api_id = phone_number[0]
-            api_hash = phone_number[1]
-
-
         self.client = Client(
             name=session_name,
-            api_id=api_id,
-            api_hash=api_hash,
+            api_id=config.API_ID,
+            api_hash=config.API_HASH,
             workdir=config.WORKDIR,
             proxy=proxy,
-            lang_code="ru"
+            lang_code='ru'
         )
 
         
